@@ -34,25 +34,25 @@ export function TaskTable({
 }: TaskTableProps) {
   const totalPages = Math.ceil(total / pageSize);
 
-  const getStatusBadgeVariant = (status: string) => {
+  const getStatusBadgeStyle = (status: string) => {
     switch (status) {
       case "Done":
-        return "default";
+        return "bg-success hover:bg-success/90 text-success-foreground border-transparent";
       case "In Progress":
-        return "secondary";
-      default:
-        return "outline";
+        return "bg-warning hover:bg-warning/90 text-warning-foreground border-transparent";
+      default: // To Do
+        return "bg-secondary hover:bg-secondary/90 text-secondary-foreground border-transparent";
     }
   };
 
-  const getPriorityBadgeVariant = (priority: string) => {
+  const getPriorityBadgeStyle = (priority: string) => {
     switch (priority) {
       case "High":
-        return "destructive";
+        return "bg-primary hover:bg-primary/90 text-primary-foreground border-transparent";
       case "Medium":
-        return "default";
-      default:
-        return "secondary";
+        return "bg-warning hover:bg-warning/90 text-warning-foreground border-transparent";
+      default: // Low
+        return "bg-secondary hover:bg-secondary/90 text-secondary-foreground border-transparent";
     }
   };
 
@@ -94,12 +94,12 @@ export function TaskTable({
                     )}
                   </TableCell>
                   <TableCell>
-                    <Badge variant={getStatusBadgeVariant(task.status)}>
+                    <Badge variant="outline" className={getStatusBadgeStyle(task.status)}>
                       {task.status}
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    <Badge variant={getPriorityBadgeVariant(task.priority)}>
+                    <Badge variant="outline" className={getPriorityBadgeStyle(task.priority)}>
                       {task.priority}
                     </Badge>
                   </TableCell>
