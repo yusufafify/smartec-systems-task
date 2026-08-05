@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/sonner";
 
 function App() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white">
       <TaskDashboard />
       <Toaster />
     </div>
