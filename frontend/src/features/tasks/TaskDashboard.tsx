@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import logo from "@/assets/logo.png";
 import { useTasks } from "@/hooks/useTasks";
 import { useDebounce } from "@/hooks/useDebounce";
 import { TaskTable } from "./TaskTable";
@@ -70,15 +71,26 @@ export function TaskDashboard() {
   };
 
   return (
-    <div className="container mx-auto py-8 px-4 max-w-5xl space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Task Management</h1>
-          <p className="text-muted-foreground mt-1">
-            Keep track of your projects and daily tasks.
-          </p>
+    <div className="container mx-auto py-10 px-4 max-w-5xl space-y-8">
+      
+      {/* Brand Header */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 border-b border-border pb-6">
+        <div className="flex items-center gap-5">
+          <img 
+            src={logo} 
+            alt="Smartecs Systems" 
+            className="h-12 w-auto object-contain select-none" 
+            draggable={false}
+          />
+          <div className="hidden sm:block h-10 w-px bg-border" />
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight text-foreground">Task Management</h1>
+            <p className="text-muted-foreground mt-0.5 text-sm">
+              Keep track of your projects and daily tasks.
+            </p>
+          </div>
         </div>
-        <Button onClick={openCreateModal} className="gap-2">
+        <Button onClick={openCreateModal} className="gap-2 shadow-sm font-medium">
           <PlusCircle className="h-4 w-4" />
           Create Task
         </Button>
