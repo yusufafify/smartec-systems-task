@@ -13,15 +13,9 @@ export class HTTPError extends Error {
   public statusText: string;
   public data?: unknown;
 
-  constructor(
-    status: number,
-    statusText: string,
-    data?: unknown,
-  ) {
+  constructor(status: number, statusText: string, data?: unknown) {
     const extractedMessage =
-      data && typeof data === "object" && "message" in data
-        ? extractErrorMessage(data)
-        : "";
+      data !== null && data !== undefined ? extractErrorMessage(data) : "";
 
     super(extractedMessage || `HTTP Error ${status}: ${statusText}`);
     this.name = "UnifiedHTTPError";
@@ -45,7 +39,6 @@ export class APIClient {
     this.getAuthToken = getAuthToken;
     this.getLanguage = getLanguage;
   }
-
 
   get<T>(path: string, opts: RequestOptions = {}) {
     return this.request<T>("GET", path, opts);
