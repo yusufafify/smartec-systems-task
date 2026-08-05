@@ -1,13 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Fira+Sans:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "@fontsource-variable/geist";
-
-
 
 @theme inline {
-    --font-heading: var(--font-sans);
-    --font-sans: 'Geist Variable', sans-serif;
+    --font-heading: 'Fira Sans', sans-serif;
+    --font-sans: 'Fira Sans', sans-serif;
+    --font-mono: 'Fira Code', monospace;
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -39,6 +38,14 @@
     --color-card: var(--card);
     --color-foreground: var(--foreground);
     --color-background: var(--background);
+    
+    --color-success: var(--success);
+    --color-success-foreground: var(--success-foreground);
+    --color-warning: var(--warning);
+    --color-warning-foreground: var(--warning-foreground);
+    --color-info: var(--info);
+    --color-info-foreground: var(--info-foreground);
+
     --radius-sm: calc(var(--radius) * 0.6);
     --radius-md: calc(var(--radius) * 0.8);
     --radius-lg: var(--radius);
@@ -49,39 +56,49 @@
 }
 
 :root {
-    --background: #F8F8F8;
-    --foreground: #251D17;
-    --card: #ffffff;
-    --card-foreground: #251D17;
-    --popover: #ffffff;
-    --popover-foreground: #251D17;
-    --primary: #71685E;
-    --primary-foreground: #F8F8F8;
-    --secondary: #D6DEDF;
+    --background: #F8F8F8; /* whitesmoke */
+    --foreground: #18171B; /* black variant */
+    --card: #FFFFFF;
+    --card-foreground: #18171B;
+    --popover: #FFFFFF;
+    --popover-foreground: #18171B;
+    --primary: #dc3545; /* Crimson from palette.css to match the Smartecs logo! */
+    --primary-foreground: #FFFFFF;
+    --secondary: #D6DEDF; /* gainsboro */
     --secondary-foreground: #18171B;
-    --muted: #D6DEDF;
-    --muted-foreground: #71685E;
-    --accent: #D6DEDF;
+    --muted: #D6DEDF; /* gainsboro */
+    --muted-foreground: #71685E; /* dimgray - passes contrast for secondary text */
+    --accent: #D6DEDF; 
     --accent-foreground: #18171B;
-    --destructive: #dc3545;
-    --border: #D6DEDF;
+    --destructive: #18171B; /* Using black for destructive to contrast against red primary */
+    --border: #D6DEDF; /* gainsboro */
     --input: #D6DEDF;
-    --ring: #71685E;
-    --chart-1: #006fe6;
-    --chart-2: #28a745;
-    --chart-3: #ffc107;
-    --chart-4: #dc3545;
-    --chart-5: #6f42c1;
-    --radius: 0.625rem;
+    --ring: #dc3545; /* Crimson focus rings */
+    
+    --success: #28a745;
+    --success-foreground: #FFFFFF;
+    --warning: #ffc107;
+    --warning-foreground: #18171B;
+    --info: #006fe6;
+    --info-foreground: #FFFFFF;
+
+    --chart-1: #251D17;
+    --chart-2: #71685E;
+    --chart-3: #dbdcde;
+    --chart-4: #006fe6;
+    --chart-5: #28a745;
+    --radius: 0.5rem;
     --sidebar: #F8F8F8;
-    --sidebar-foreground: #251D17;
-    --sidebar-primary: #71685E;
+    --sidebar-foreground: #18171B;
+    --sidebar-primary: #251D17;
     --sidebar-primary-foreground: #F8F8F8;
     --sidebar-accent: #D6DEDF;
-    --sidebar-accent-foreground: #251D17;
+    --sidebar-accent-foreground: #18171B;
     --sidebar-border: #D6DEDF;
     --sidebar-ring: #71685E;
 }
+
+
 
 
 
