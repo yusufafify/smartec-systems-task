@@ -8,7 +8,8 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Edit, Trash2 } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Edit, Trash2, CalendarDays, Inbox } from "lucide-react";
 import type { Task } from "@/types/task";
 
 interface TaskTableProps {
@@ -58,59 +59,93 @@ export function TaskTable({
 
   return (
     <div className="space-y-4">
-      <div className="rounded-md border">
+      <div className="rounded-xl border border-border bg-card shadow-sm overflow-hidden">
         <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Title</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Priority</TableHead>
-              <TableHead>Due Date</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+          <TableHeader className="bg-muted/30">
+            <TableRow className="hover:bg-transparent">
+              <TableHead className="w-[40%] font-semibold text-foreground">Task Details</TableHead>
+              <TableHead className="font-semibold text-foreground">Status</TableHead>
+              <TableHead className="font-semibold text-foreground">Priority</TableHead>
+              <TableHead className="font-semibold text-foreground">Due Date</TableHead>
+              <TableHead className="text-right font-semibold text-foreground">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <TableRow>
-                <TableCell colSpan={5} className="h-24 text-center">
-                  Loading tasks...
-                </TableCell>
-              </TableRow>
+              // Skeleton Loading State
+              Array.from({ length: 5 }).map((_, index) => (
+                <TableRow key={`skeleton-${index}`}>
+                  <TableCell>
+                    <div className="space-y-2">
+                      <Skeleton className="h-4 w-3/4" />
+                      <Skeleton className="h-3 w-1/2" />
+                    </div>
+                  </TableCell>
+                  <TableCell><Skeleton className="h-6 w-20 rounded-full" /></TableCell>
+                  <TableCell><Skeleton className="h-6 w-16 rounded-full" /></TableCell>
+                  <TableCell><Skeleton className="h-4 w-24" /></TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex justify-end gap-2">
+                      <Skeleton className="h-8 w-8 rounded-md" />
+                      <Skeleton className="h-8 w-8 rounded-md" />
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))
             ) : tasks.length === 0 ? (
+              // Empty State
               <TableRow>
-                <TableCell colSpan={5} className="h-24 text-center text-muted-foreground">
-                  No tasks found.
+                <TableCell colSpan={5} className="h-64 text-center">
+                  <div className="flex flex-col items-center justify-center space-y-3 text-muted-foreground animate-in fade-in zoom-in-95 duration-300">
+                    <div className="p-4 bg-muted/50 rounded-full">
+                      <Inbox className="h-8 w-8 text-muted-foreground/80" />
+                    </div>
+                    <p className="text-lg font-medium text-foreground">No tasks found</p>
+                    <p className="text-sm">Try adjusting your filters or create a new task to get started.</p>
+                  </div>
                 </TableCell>
               </TableRow>
             ) : (
+              // Task Rows
               tasks.map((task) => (
-                <TableRow key={task.id}>
-                  <TableCell className="font-medium">
-                    <div>{task.title}</div>
+                <TableRow 
+                  key={task.id} 
+                  className="group transition-colors duration-200 hover:bg-muted/30 cursor-default"
+                >
+                  <TableCell>
+                    <div className="font-medium text-foreground">{task.title}</div>
                     {task.description && (
-                      <div className="text-xs text-muted-foreground truncate max-w-[200px] sm:max-w-[300px]">
+                      <div className="text-xs text-muted-foreground mt-1 truncate max-w-[200px] sm:max-w-[300px]">
                         {task.description}
                       </div>
                     )}
                   </TableCell>
                   <TableCell>
-                    <Badge variant="outline" className={getStatusBadgeStyle(task.status)}>
+                    <Badge variant="outline" className={`font-medium ${getStatusBadgeStyle(task.status)}`}>
                       {task.status}
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    <Badge variant="outline" className={getPriorityBadgeStyle(task.priority)}>
+                    <Badge variant="outline" className={`font-medium ${getPriorityBadgeStyle(task.priority)}`}>
                       {task.priority}
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    {task.due_date ? new Date(task.due_date).toLocaleDateString() : "-"}
+                    {task.due_date ? (
+                      <div className="flex items-center text-sm text-muted-foreground font-mono">
+                        <CalendarDays className="mr-2 h-3.5 w-3.5" />
+                        {new Date(task.due_date).toLocaleDateString()}
+                      </div>
+                    ) : (
+                      <span className="text-muted-foreground/50">----</span>
+                    )}
                   </TableCell>
                   <TableCell className="text-right">
-                    <div className="flex justify-end gap-2">
+                    <div className="flex justify-end gap-1">
                       <Button
                         variant="ghost"
                         size="icon"
+                        className="h-8 w-8 text-muted-foreground hover:text-foreground"
                         onClick={() => onEdit(task)}
                       >
                         <Edit className="h-4 w-4" />
@@ -118,7 +153,7 @@ export function TaskTable({
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="text-destructive"
+                        className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
                         onClick={() => onDelete(task)}
                       >
                         <Trash2 className="h-4 w-4" />
@@ -133,10 +168,10 @@ export function TaskTable({
       </div>
 
       {total > 0 && (
-        <div className="flex items-center justify-between">
-          <div className="text-sm text-muted-foreground">
-            Showing {(page - 1) * pageSize + 1} to{" "}
-            {Math.min(page * pageSize, total)} of {total} tasks
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
+          <div className="text-sm text-muted-foreground font-medium">
+            Showing <span className="text-foreground">{(page - 1) * pageSize + 1}</span> to{" "}
+            <span className="text-foreground">{Math.min(page * pageSize, total)}</span> of <span className="text-foreground">{total}</span> tasks
           </div>
           <div className="flex items-center space-x-2">
             <Button
@@ -144,6 +179,7 @@ export function TaskTable({
               size="sm"
               onClick={() => onPageChange(page - 1)}
               disabled={page <= 1}
+              className="shadow-sm transition-all active:scale-95"
             >
               Previous
             </Button>
@@ -152,6 +188,7 @@ export function TaskTable({
               size="sm"
               onClick={() => onPageChange(page + 1)}
               disabled={page >= totalPages}
+              className="shadow-sm transition-all active:scale-95"
             >
               Next
             </Button>
