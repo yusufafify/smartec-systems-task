@@ -29,14 +29,19 @@ export function TaskDeleteAlert({
         <DialogHeader>
           <DialogTitle>Delete Task</DialogTitle>
           <DialogDescription>
-            Are you sure you want to delete the task "{taskTitle}"? This action cannot be undone.
+            Are you sure you want to delete the task "{taskTitle}"? This action
+            cannot be undone.
           </DialogDescription>
         </DialogHeader>
-        <DialogFooter className="mt-4">
-          <Button variant="outline" onClick={() => onOpenChange(false)} disabled={isDeleting}>
+        <DialogFooter className="mt-4 bg-white">
+          <Button
+            variant="outline"
+            onClick={() => onOpenChange(false)}
+            disabled={isDeleting}
+          >
             Cancel
           </Button>
-          <Button variant="destructive" onClick={onConfirm} disabled={isDeleting}>
+          <Button variant="default" onClick={onConfirm} disabled={isDeleting}>
             {isDeleting ? "Deleting..." : "Delete"}
           </Button>
         </DialogFooter>
