@@ -49,9 +49,9 @@ def get_tasks(
     # Sorting
     sort_column = getattr(Task, sort, Task.created_at)
     if order.lower() == "asc":
-        query = query.order_by(asc(sort_column))
+        query = query.order_by(sort_column.asc().nulls_last())
     else:
-        query = query.order_by(desc(sort_column))
+        query = query.order_by(sort_column.desc().nulls_last())
         
     # Pagination
     total = query.count()
