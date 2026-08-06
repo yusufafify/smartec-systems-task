@@ -57,17 +57,41 @@ export function TaskTable({
     }
   };
 
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "numeric",
+      year: "numeric",
+    });
+  };
+
   return (
     <div className="space-y-4">
       <div className="rounded-xl border border-border bg-card shadow-sm overflow-hidden">
         <Table>
           <TableHeader className="bg-muted/30">
             <TableRow className="hover:bg-transparent">
-              <TableHead className="w-[40%] font-semibold text-foreground">Task Details</TableHead>
-              <TableHead className="font-semibold text-foreground">Status</TableHead>
-              <TableHead className="font-semibold text-foreground">Priority</TableHead>
-              <TableHead className="font-semibold text-foreground">Due Date</TableHead>
-              <TableHead className="text-right font-semibold text-foreground">Actions</TableHead>
+              <TableHead className="w-[40%] font-semibold text-foreground">
+                Task Details
+              </TableHead>
+              <TableHead className="font-semibold text-foreground">
+                Status
+              </TableHead>
+              <TableHead className="font-semibold text-foreground">
+                Priority
+              </TableHead>
+              <TableHead className="font-semibold text-foreground">
+                Due Date
+              </TableHead>
+              <TableHead className="font-semibold text-foreground">
+                Created
+              </TableHead>
+              <TableHead className="font-semibold text-foreground">
+                Updated
+              </TableHead>
+              <TableHead className="text-right font-semibold text-foreground">
+                Actions
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -81,9 +105,21 @@ export function TaskTable({
                       <Skeleton className="h-3 w-1/2" />
                     </div>
                   </TableCell>
-                  <TableCell><Skeleton className="h-6 w-20 rounded-full" /></TableCell>
-                  <TableCell><Skeleton className="h-6 w-16 rounded-full" /></TableCell>
-                  <TableCell><Skeleton className="h-4 w-24" /></TableCell>
+                  <TableCell>
+                    <Skeleton className="h-6 w-20 rounded-full" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-6 w-16 rounded-full" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-24" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-24" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-24" />
+                  </TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">
                       <Skeleton className="h-8 w-8 rounded-md" />
@@ -95,25 +131,32 @@ export function TaskTable({
             ) : tasks.length === 0 ? (
               // Empty State
               <TableRow>
-                <TableCell colSpan={5} className="h-64 text-center">
+                <TableCell colSpan={7} className="h-64 text-center">
                   <div className="flex flex-col items-center justify-center space-y-3 text-muted-foreground animate-in fade-in zoom-in-95 duration-300">
                     <div className="p-4 bg-muted/50 rounded-full">
                       <Inbox className="h-8 w-8 text-muted-foreground/80" />
                     </div>
-                    <p className="text-lg font-medium text-foreground">No tasks found</p>
-                    <p className="text-sm">Try adjusting your filters or create a new task to get started.</p>
+                    <p className="text-lg font-medium text-foreground">
+                      No tasks found
+                    </p>
+                    <p className="text-sm">
+                      Try adjusting your filters or create a new task to get
+                      started.
+                    </p>
                   </div>
                 </TableCell>
               </TableRow>
             ) : (
               // Task Rows
               tasks.map((task) => (
-                <TableRow 
-                  key={task.id} 
+                <TableRow
+                  key={task.id}
                   className="group transition-colors duration-200 hover:bg-muted/30 cursor-default"
                 >
                   <TableCell>
-                    <div className="font-medium text-foreground">{task.title}</div>
+                    <div className="font-medium text-foreground">
+                      {task.title}
+                    </div>
                     {task.description && (
                       <div className="text-xs text-muted-foreground mt-1 truncate max-w-[200px] sm:max-w-[300px]">
                         {task.description}
@@ -121,12 +164,18 @@ export function TaskTable({
                     )}
                   </TableCell>
                   <TableCell>
-                    <Badge variant="outline" className={`font-medium ${getStatusBadgeStyle(task.status)}`}>
+                    <Badge
+                      variant="outline"
+                      className={`font-medium ${getStatusBadgeStyle(task.status)}`}
+                    >
                       {task.status}
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    <Badge variant="outline" className={`font-medium ${getPriorityBadgeStyle(task.priority)}`}>
+                    <Badge
+                      variant="outline"
+                      className={`font-medium ${getPriorityBadgeStyle(task.priority)}`}
+                    >
                       {task.priority}
                     </Badge>
                   </TableCell>
@@ -134,11 +183,21 @@ export function TaskTable({
                     {task.due_date ? (
                       <div className="flex items-center text-sm text-muted-foreground font-mono">
                         <CalendarDays className="mr-2 h-3.5 w-3.5" />
-                        {new Date(task.due_date).toLocaleDateString()}
+                        {formatDate(task.due_date)}
                       </div>
                     ) : (
                       <span className="text-muted-foreground/50">----</span>
                     )}
+                  </TableCell>
+                  <TableCell>
+                    <div className="text-sm text-muted-foreground font-mono">
+                      {formatDate(task.created_at)}
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="text-sm text-muted-foreground font-mono">
+                      {formatDate(task.updated_at)}
+                    </div>
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-1">
@@ -170,8 +229,13 @@ export function TaskTable({
       {total > 0 && (
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
           <div className="text-sm text-muted-foreground font-medium">
-            Showing <span className="text-foreground">{(page - 1) * pageSize + 1}</span> to{" "}
-            <span className="text-foreground">{Math.min(page * pageSize, total)}</span> of <span className="text-foreground">{total}</span> tasks
+            Showing{" "}
+            <span className="text-foreground">{(page - 1) * pageSize + 1}</span>{" "}
+            to{" "}
+            <span className="text-foreground">
+              {Math.min(page * pageSize, total)}
+            </span>{" "}
+            of <span className="text-foreground">{total}</span> tasks
           </div>
           <div className="flex items-center space-x-2">
             <Button

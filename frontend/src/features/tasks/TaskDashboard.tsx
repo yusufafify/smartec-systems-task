@@ -7,9 +7,21 @@ import { TaskDialog } from "./TaskDialog";
 import { TaskDeleteAlert } from "./TaskDeleteAlert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
-import { PlusCircle, Search, CheckCircle2, Clock, ListTodo } from "lucide-react";
+import {
+  PlusCircle,
+  Search,
+  CheckCircle2,
+  Clock,
+  ListTodo,
+} from "lucide-react";
 import type { Task, TaskStatus, TaskCreate } from "@/types/task";
 
 export function TaskDashboard() {
@@ -28,7 +40,7 @@ export function TaskDashboard() {
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
-  
+
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [taskToDelete, setTaskToDelete] = useState<Task | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -76,32 +88,36 @@ export function TaskDashboard() {
     const items = tasksData?.items || [];
     return {
       total: tasksData?.total || 0,
-      done: items.filter(t => t.status === "Done").length,
-      inProgress: items.filter(t => t.status === "In Progress").length,
+      done: items.filter((t) => t.status === "Done").length,
+      inProgress: items.filter((t) => t.status === "In Progress").length,
     };
   }, [tasksData]);
 
   return (
     <div className="container mx-auto py-10 px-4 max-w-6xl space-y-8 animate-in fade-in duration-500">
-      
       {/* Brand Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 border-b border-border pb-6">
         <div className="flex items-center gap-5">
-          <img 
-            src={logo} 
-            alt="Smartecs Systems" 
-            className="h-12 w-auto object-contain select-none transition-transform hover:scale-105 duration-300" 
+          <img
+            src={logo}
+            alt="Smartecs Systems"
+            className="h-12 w-auto object-contain select-none transition-transform hover:scale-105 duration-300"
             draggable={false}
           />
           <div className="hidden sm:block h-10 w-px bg-border" />
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-foreground">Task Management</h1>
+            <h1 className="text-2xl font-bold tracking-tight text-foreground">
+              Task Management
+            </h1>
             <p className="text-muted-foreground mt-0.5 text-sm">
               Keep track of your projects and daily tasks.
             </p>
           </div>
         </div>
-        <Button onClick={openCreateModal} className="gap-2 shadow-sm font-medium transition-all hover:shadow-md active:scale-95">
+        <Button
+          onClick={openCreateModal}
+          className="gap-2 shadow-sm font-medium transition-all hover:shadow-md active:scale-95"
+        >
           <PlusCircle className="h-4 w-4" />
           Create Task
         </Button>
@@ -115,19 +131,23 @@ export function TaskDashboard() {
               <ListTodo className="h-5 w-5 text-secondary-foreground" />
             </div>
             <div>
-              <p className="text-sm font-medium text-muted-foreground">Total Tasks</p>
+              <p className="text-sm font-medium text-muted-foreground">
+                Total Tasks
+              </p>
               <h3 className="text-2xl font-bold">{stats.total}</h3>
             </div>
           </CardContent>
         </Card>
-        
+
         <Card className="border-border/50 shadow-sm overflow-hidden group">
           <CardContent className="p-6 flex items-center gap-4 transition-colors">
             <div className="p-3 bg-warning/20 rounded-full">
               <Clock className="h-5 w-5 text-warning" />
             </div>
             <div>
-              <p className="text-sm font-medium text-muted-foreground">In Progress</p>
+              <p className="text-sm font-medium text-muted-foreground">
+                In Progress
+              </p>
               <h3 className="text-2xl font-bold">{stats.inProgress}</h3>
             </div>
           </CardContent>
@@ -139,7 +159,9 @@ export function TaskDashboard() {
               <CheckCircle2 className="h-5 w-5 text-success" />
             </div>
             <div>
-              <p className="text-sm font-medium text-muted-foreground">Completed</p>
+              <p className="text-sm font-medium text-muted-foreground">
+                Completed
+              </p>
               <h3 className="text-2xl font-bold">{stats.done}</h3>
             </div>
           </CardContent>
@@ -157,11 +179,15 @@ export function TaskDashboard() {
             onChange={(e) => setSearchInput(e.target.value)}
           />
         </div>
-        
+
         <div className="flex w-full sm:w-auto gap-3">
           <Select
             value={params.status || "all"}
-            onValueChange={(val) => updateParams({ status: val === "all" || !val ? undefined : (val as TaskStatus) })}
+            onValueChange={(val) =>
+              updateParams({
+                status: val === "all" || !val ? undefined : (val as TaskStatus),
+              })
+            }
           >
             <SelectTrigger className="w-full sm:w-[160px] bg-background border-border/50 shadow-sm h-10">
               <SelectValue placeholder="All Statuses" />
@@ -175,15 +201,29 @@ export function TaskDashboard() {
           </Select>
 
           <Select
-            value={params.sort || "created_at"}
-            onValueChange={(val) => updateParams({ sort: val || undefined, order: val === "due_date" ? "asc" : "desc" })}
+            value={`${params.sort || "created_at"}_${params.order || "desc"}`}
+            onValueChange={(val) => {
+              if (val === "created_at_desc")
+                updateParams({ sort: "created_at", order: "desc" });
+              if (val === "due_date_asc")
+                updateParams({ sort: "due_date", order: "asc" });
+              if (val === "due_date_desc")
+                updateParams({ sort: "due_date", order: "desc" });
+            }}
           >
-            <SelectTrigger className="w-full sm:w-[160px] bg-background border-border/50 shadow-sm h-10">
-              <SelectValue placeholder="Sort by" />
+            <SelectTrigger className="w-full sm:w-[170px] bg-background border-border/50 shadow-sm h-10">
+              <SelectValue placeholder="Sort by">
+                {params.sort === "due_date"
+                  ? params.order === "desc"
+                    ? "Due Date (Desc)"
+                    : "Due Date (Asc)"
+                  : "Newest First"}
+              </SelectValue>
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="created_at">Newest First</SelectItem>
-              <SelectItem value="due_date">Due Date (Asc)</SelectItem>
+              <SelectItem value="created_at_desc">Newest First</SelectItem>
+              <SelectItem value="due_date_asc">Due Date (Asc)</SelectItem>
+              <SelectItem value="due_date_desc">Due Date (Desc)</SelectItem>
             </SelectContent>
           </Select>
         </div>
